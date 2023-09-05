@@ -84,14 +84,22 @@ def test_function_comments(solc_binary_path) -> None:
         function_name = function.name
         expected_function_data = expected_json_data.get(function_name, {})
 
-        assert function.documentation.notice == expected_function_data.get('notice', '')
-        assert function.documentation.dev == expected_function_data.get('dev', '')
+        assert function.documentation.notice == expected_function_data.get("notice", "")
+        assert function.documentation.dev == expected_function_data.get("dev", "")
 
-        actual_params = [{"name": param[0], "description": param[1]} for param in function.documentation.params]
-        expected_params = expected_function_data.get('params', [])
+        param_parsed = function.documentation.params.get('parsed', {})
+        actual_params = [{"name": param[0], "description": param[1]} for param in param_parsed]
+        expected_params = expected_function_data.get("params", [])
         assert actual_params == expected_params
 
-        # can be string or list
-        actual_returns = [{"name": param[0], "description": param[1]} for param in function.documentation.returns]
-        expected_returns = expected_function_data.get('returns', [])
-        assert actual_returns == expected_returns
+        actual_returns = function.documentation.returns
+        expected_returns = expected_function_data.get('returns', '')
+
+        if function_name == "_protected":
+            return_parsed = function.documentation.returns.get('parsed', {})
+            actual_returns = [{"name": param[0], "description": param[1]} for param in return_parsed]
+            assert actual_returns == expected_returns
+        else:
+            actual_returns_text = actual_returns.get("text", "")
+            assert actual_returns_text == expected_returns
+

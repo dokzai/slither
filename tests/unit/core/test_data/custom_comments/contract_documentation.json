@@ -1,58 +1,58 @@
 {
     "_saveCalculationData": {
-        "dev": ["Increments the total number of calculations and saves the calculation data."],
-        "notice": [],
+        "dev": "Increments the total number of calculations and saves the calculation data.",
+        "notice": "",
         "params": [
-            {"name": "a", "description": "first operand"},
-            {"name": "b", "description": "second operand"},
-            {"name": "operationType", "description": "type of operation performed"},
-            {"name": "result", "description": "result of the operation"}
+            {"name": "a", "description": "The first operand"},
+            {"name": "b", "description": "The second operand"},
+            {"name": "operationType", "description": "The type of operation performed"},
+            {"name": "result", "description": "The result of the operation"}
         ],
-        "returns": []
+        "returns": ""
     },
     "_protected": {
-        "dev": ["Calculates the square of the sum of two numbers."],
-        "notice": [],
+        "dev": "Calculates the square of the sum of two numbers.",
+        "notice": "",
         "params": [
-            {"name": "a", "description": "first number"},
-            {"name": "b", "description": "second number"}
+            {"name": "a", "description": "The first number"},
+            {"name": "b", "description": "The second number"}
         ],
         "returns": [
-            {"name": "sum", "description": "sum of `a` and `b`"},
-            {"name": "square", "description": "square of the sum of `a` and `b`"}
+            {"name": "sum", "description": "The sum of `a` and `b`"},
+            {"name": "square", "description": "The square of the sum of `a` and `b`"}
         ]
     },
     "_not_protected_asm": {
-        "dev": ["Calculates the square of the sum of two numbers using inline assembly."],
-        "notice": [],
+        "dev": "Calculates the square of the sum of two numbers using inline assembly.",
+        "notice": "",
         "params": [
-            {"name": "a", "description": "first number"},
-            {"name": "b", "description": "second number"}
+            {"name": "a", "description": "The first number"},
+            {"name": "b", "description": "The second number"}
         ],
-        "returns": [{"name": "", "description": "The square of the sum of `a` and `b`."}]
+        "returns": "The square of the sum of `a` and `b`."
     },
     "_not_protected_unchecked": {
-        "dev": ["Calculates the square of the sum of two numbers without using SafeMath. Note: This function does not protect against overflow."],
-        "notice": [],
+        "dev": "Calculates the square of the sum of two numbers without using SafeMath. Note: This function does not protect against overflow.",
+        "notice": "",
         "params": [
-            {"name": "a", "description": "first number"},
-            {"name": "b", "description": "second number"}
+            {"name": "a", "description": "The first number"},
+            {"name": "b", "description": "The second number"}
         ],
-        "returns": [{"name": "", "description": "The square of the sum of `a` and `b`."}]
+        "returns": "The square of the sum of `a` and `b`."
     },
     "f": {
-        "dev": ["Public function that utilizes the above internal functions for demonstration."],
-        "notice": [],
+        "dev": "Public function that utilizes the above internal functions for demonstration.",
+        "notice": "",
         "params": [
-            {"name": "a", "description": "first number"},
-            {"name": "b", "description": "second number"}
+            {"name": "a", "description": "The first number"},
+            {"name": "b", "description": "The second number"}
         ],
-        "returns": []
+        "returns": ""
     },
     "constructor": {
-        "dev": [],
-        "notice": [],
+        "dev": "",
+        "notice": "",
         "params": [],
-        "returns": []
+        "returns": ""
     }
 }

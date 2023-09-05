@@ -77,6 +77,10 @@ class Documentation:
         lines = self.text.strip().split('\n')
 
         for line in lines:
+            # The regex r'@(\w+)' is used to find tags in the line.
+            # '@' matches the literal '@' character.
+            # '(\w+)' captures one or more word characters (letters, numbers, or underscores).
+            # The captured word characters will represent the tag name (e.g., "param", "return").
             match = re.search(r'@(\w+)', line)
 
             if match:
@@ -100,7 +104,7 @@ class Documentation:
         self._assembled = True
 
     @property
-    def dev(self) -> List[str]:
+    def dev(self) -> str:
         """
         Property to get all 'dev' tags as a list of strings.
 
@@ -110,10 +114,10 @@ class Documentation:
             A list containing all 'dev' tags.
         """
         self._assemble_tags()
-        return self._tags.get('dev', [])
+        return ' '.join(self._tags.get('dev', []))
 
     @property
-    def notice(self) -> List[str]:
+    def notice(self) -> str:
         """
         Property to get all 'notice' tags as a list of strings.
 
@@ -123,41 +127,52 @@ class Documentation:
             A list containing all 'notice' tags.
         """
         self._assemble_tags()
-        return self._tags.get('notice', [])
+        return ' '.join(self._tags.get('notice', []))
 
     @property
-    def params(self) -> List[Tuple[str, str]]:
+    def params(self) -> Dict[str, Union[str, List[Tuple[str, str]]]]:
         """
-        Property to get 'param' tags as a list of tuples.
+        Property to get 'param' tags as a dictionary.
 
         Returns
         -------
-        list of tuple
-            A list of tuples, each containing parameter name and description.
+        Dict[str, Union[str, List[Tuple[str, str]]]]
+            A dictionary containing:
+                - 'parsed': A list of tuples parsed from the @param string
+                - 'text': The original @param string
         """
         self._assemble_tags()
         params = ' '.join(self._tags.get('param', []))
-        return re.findall(r'(\w+) The (.+?)(?:\.|$)', params)
+
+        # Using regex to find all occurrences of the pattern in the @param string
+        # The regex pattern does the following:
+        # 1. (\w+): Captures one or more word characters (e.g., "str", "int").
+        # 2. (.+?): Captures one or more of any character (except line terminators), but as few as possible.
+        # 3. (?:\.|$): Matches either a literal period '.' or the end of the string, but doesn't capture it.
+        parsed_params = re.findall(r'(\w+) (.+?)(?:\.|$)', params)
+
+        return {'parsed': parsed_params, 'text': params}
 
     @property
-    def returns(self) -> List[Tuple[str, str]]:
+    def returns(self) -> Dict[str, Union[str, List[Tuple[str, str]]]]:
         """
-        Property to get 'return' tags either as a string or as a list of tuples.
+        Property to get 'return' tags as a dictionary.
 
         Returns
         -------
-        Union[str, list of tuple]
-            Either a single string or a list of tuples for multiple return types.
+        Dict[str, Union[str, List[Tuple[str, str]]]]
+            A dictionary containing:
+                - 'parsed': A list of tuples parsed from the @return string
+                - 'text': The original @return string
         """
-        output = []
         self._assemble_tags()
         returns = ' '.join(self._tags.get('return', []))
-        multiple_returns = re.findall(r'(\w+) The (.+?)(?:\.|$)', returns)
 
-        if multiple_returns:
-            output = multiple_returns
-        else:
-            if returns:
-                output = [('', returns)]
+        # Using regex to find all occurrences of the pattern in the @return string
+        # The regex pattern does the following:
+        # 1. (\w+): Captures one or more word characters (e.g., "str", "int").
+        # 2. (.+?): Captures one or more of any character (except line terminators), but as few as possible.
+        # 3. (?:\.|$): Matches either a literal period '.' or the end of the string, but doesn't capture it.
+        multiple_returns = re.findall(r'(\w+) (.+?)(?:\.|$)', returns)
 
-        return output
+        return {'parsed': multiple_returns, 'text': returns}
