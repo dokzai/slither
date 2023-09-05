@@ -14,6 +14,7 @@ from slither.core.declarations.solidity_variables import (
     SolidityVariable,
     SolidityVariableComposed,
 )
+from slither.core.declarations.documentation import Documentation
 from slither.core.expressions import (
     Identifier,
     IndexAccess,
@@ -224,6 +225,7 @@ class Function(SourceMapping, metaclass=ABCMeta):  # pylint: disable=too-many-pu
 
         # To be improved with a parsing of the documentation
         self.has_documentation: bool = False
+        self._documentation: Optional[dict] = None
 
     ###################################################################################
     ###################################################################################
@@ -251,6 +253,14 @@ class Function(SourceMapping, metaclass=ABCMeta):  # pylint: disable=too-many-pu
     @name.setter
     def name(self, new_name: str):
         self._name = new_name
+
+    @property
+    def documentation(self) -> Optional[Documentation]:
+        return self._documentation
+
+    @documentation.setter
+    def documentation(self, data: dict):
+        self._documentation = Documentation(data)
 
     @property
     def internal_scope(self) -> List[str]:

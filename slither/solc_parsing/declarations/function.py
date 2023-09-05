@@ -91,8 +91,8 @@ class FunctionSolc(CallerContextExpression):
             Union[LocalVariableSolc, LocalVariableInitFromTupleSolc]
         ] = []
 
-        if "documentation" in function_data:
-            function.has_documentation = True
+        function.documentation = function_data.get('documentation', dict())
+        function.has_documentation = function.documentation is not None
 
     @property
     def underlying_function(self) -> Function:

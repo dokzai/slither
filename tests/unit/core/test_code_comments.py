@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 from slither import Slither
@@ -61,3 +62,36 @@ def test_contract_comments(solc_binary_path) -> None:
     contract = compilation_unit.get_contract_from_name("A")[0]
 
     assert contract.comments == comments
+
+
+def test_function_comments(solc_binary_path) -> None:
+    solc_path = solc_binary_path("0.8.10")
+    slither = Slither(
+        Path(CUSTOM_COMMENTS_TEST_DATA_DIR, "contract_documentation.sol").as_posix(), solc=solc_path
+    )
+
+    expected_output = Path(CUSTOM_COMMENTS_TEST_DATA_DIR, "contract_documentation.json").as_posix()
+
+    with open(expected_output, 'r') as f:
+        expected_json_data = json.load(f)
+
+    compilation_unit = slither.compilation_units[0]
+    contract = compilation_unit.get_contract_from_name("A")[0]
+
+    for function in contract.functions:
+        assert function.has_documentation
+
+        function_name = function.name
+        expected_function_data = expected_json_data.get(function_name, {})
+
+        assert function.documentation.notice == expected_function_data.get('notice', '')
+        assert function.documentation.dev == expected_function_data.get('dev', '')
+
+        actual_params = [{"name": param[0], "description": param[1]} for param in function.documentation.params]
+        expected_params = expected_function_data.get('params', [])
+        assert actual_params == expected_params
+
+        # can be string or list
+        actual_returns = [{"name": param[0], "description": param[1]} for param in function.documentation.returns]
+        expected_returns = expected_function_data.get('returns', [])
+        assert actual_returns == expected_returns
