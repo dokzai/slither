@@ -103,3 +103,38 @@ def test_function_comments(solc_binary_path) -> None:
             actual_returns_text = actual_returns.get("text", "")
             assert actual_returns_text == expected_returns
 
+
+def test_event_comments(solc_binary_path) -> None:
+    solc_path = solc_binary_path("0.8.10")
+    slither = Slither(
+        Path(CUSTOM_COMMENTS_TEST_DATA_DIR, "contract_documentation.sol").as_posix(), solc=solc_path
+    )
+
+    expected_output = Path(CUSTOM_COMMENTS_TEST_DATA_DIR, "contract_documentation.json").as_posix()
+
+    with open(expected_output, 'r') as f:
+        expected_json_data = json.load(f)
+
+    compilation_unit = slither.compilation_units[0]
+    contract = compilation_unit.get_contract_from_name("A")[0]
+
+    for event in contract.events:
+        event_name = event.name
+        expected_event_data = expected_json_data.get(event_name, {})
+
+        assert event.documentation.notice == expected_event_data.get("notice", "")
+        assert event.documentation.dev == expected_event_data.get("dev", "")
+
+        params = event.documentation.params
+        expected_params = expected_event_data.get("params", [])
+        if event_name == "NotProtectedAsmCalled":
+            actual_params_text = params.get("text", "")
+            assert actual_params_text == expected_params
+        else:
+            params_parsed = params.get('parsed', {})
+            actual_params = [{"name": param[0], "description": param[1]} for param in params_parsed]
+            assert actual_params == expected_params
+
+        actual_returns = event.documentation.returns.get("text", "")
+        expected_returns = expected_event_data.get("returns", "")
+        assert actual_returns == expected_returns

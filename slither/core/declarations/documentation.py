@@ -173,6 +173,6 @@ class Documentation:
         # 1. (\w+): Captures one or more word characters (e.g., "str", "int").
         # 2. (.+?): Captures one or more of any character (except line terminators), but as few as possible.
         # 3. (?:\.|$): Matches either a literal period '.' or the end of the string, but doesn't capture it.
-        multiple_returns = re.findall(r'(\w+) (.+?)(?:\.|$)', returns)
+        parsed_returns = re.findall(r'(\w+) (.+?)(?:\.|$)', returns)
 
-        return {'parsed': multiple_returns, 'text': returns}
+        return {'parsed': parsed_returns, 'text': returns}

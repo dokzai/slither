@@ -1,6 +1,7 @@
-from typing import List, Tuple, TYPE_CHECKING
+from typing import List, Tuple, Optional, TYPE_CHECKING
 
 from slither.core.declarations.contract_level import ContractLevel
+from slither.core.declarations.documentation import Documentation
 from slither.core.source_mapping.source_mapping import SourceMapping
 from slither.core.variables.event_variable import EventVariable
 
@@ -13,6 +14,7 @@ class Event(ContractLevel, SourceMapping):
         super().__init__()
         self._name = None
         self._elems: List[EventVariable] = []
+        self._documentation: Optional[Documentation] = None
 
     @property
     def name(self) -> str:
@@ -21,6 +23,14 @@ class Event(ContractLevel, SourceMapping):
     @name.setter
     def name(self, name: str):
         self._name = name
+
+    @property
+    def documentation(self) -> Optional[Documentation]:
+        return self._documentation
+
+    @documentation.setter
+    def documentation(self, data: dict):
+        self._documentation = Documentation(data)
 
     @property
     def signature(self) -> Tuple[str, List[str]]:

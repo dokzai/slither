@@ -1,4 +1,10 @@
 {
+    "constructor": {
+        "dev": "",
+        "notice": "",
+        "params": [],
+        "returns": ""
+    },
     "_saveCalculationData": {
         "dev": "Increments the total number of calculations and saves the calculation data.",
         "notice": "",
@@ -49,10 +55,26 @@
         ],
         "returns": ""
     },
-    "constructor": {
+    "ProtectedCalled": {
         "dev": "",
-        "notice": "",
-        "params": [],
+        "notice": "Emitted when the `protected` function is called.",
+        "params": [
+            {"name": "result", "description": "The square of the sum of the two input numbers"}
+        ],
+        "returns": ""
+    },
+    "NotProtectedAsmCalled": {
+        "dev": "",
+        "notice": "Emitted when the `not_protected_asm` function is called.",
+        "params": "result The square of the sum of the two input numbers.",
+        "returns": ""
+    },
+    "NotProtectedUncheckedCalled": {
+        "dev": "",
+        "notice": "Emitted when the `not_protected_unchecked` function is called.",
+        "params": [
+            {"name": "result", "description": "The square of the sum of the two input numbers"}
+        ],
         "returns": ""
     }
 }
