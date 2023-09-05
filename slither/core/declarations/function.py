@@ -225,7 +225,7 @@ class Function(SourceMapping, metaclass=ABCMeta):  # pylint: disable=too-many-pu
 
         # To be improved with a parsing of the documentation
         self.has_documentation: bool = False
-        self._documentation: Optional[dict] = None
+        self._documentation: Optional[Documentation] = None
 
     ###################################################################################
     ###################################################################################
