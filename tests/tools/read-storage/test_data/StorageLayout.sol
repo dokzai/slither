@@ -5,10 +5,25 @@ contract StorageLayout {
     uint248 packedUint = 1;
     bool packedBool = true;
 
+    struct DynamicStruct {
+        uint256[] _values;
+        mapping(address => uint256) _indexes;
+    }
+
+    struct NestedStruct {
+        DynamicStruct nested;
+        uint256 a;
+        bool b;
+        uint16 c;
+        uint32 d;
+        uint64 e;
+    }
+
     struct PackedStruct {
         bool b;
         uint248 a;
     }
+
     PackedStruct _packedStruct = PackedStruct(packedBool, packedUint);
 
     mapping (uint => PackedStruct) mappingPackedStruct;
@@ -36,7 +51,7 @@ contract StorageLayout {
     uint[][] multidimensionalArray;
     PackedStruct[] dynamicArrayOfStructs;
     PackedStruct[3] fixedArrayOfStructs;
-
+    NestedStruct _nestedStruct;
     function store() external {
         require(_address == address(0));
         _address = msg.sender;
@@ -69,7 +84,16 @@ contract StorageLayout {
         fixedArrayOfStructs[0] = _packedStruct;
         fixedArrayOfStructs[1] = PackedStruct(false, 10);
 
-       mappingDynamicArrayOfStructs[_address].push(dynamicArrayOfStructs[0]);
-       mappingDynamicArrayOfStructs[_address].push(dynamicArrayOfStructs[1]);
+        mappingDynamicArrayOfStructs[_address].push(dynamicArrayOfStructs[0]);
+        mappingDynamicArrayOfStructs[_address].push(dynamicArrayOfStructs[1]);
+
+        _nestedStruct.nested._values.push(11);
+        _nestedStruct.nested._values.push(22);
+        _nestedStruct.nested._indexes[_address] = 1234;
+        _nestedStruct.a = 123456789;
+        _nestedStruct.b = true;
+        _nestedStruct.c = 4095;
+        _nestedStruct.d = 4294967295;
+        _nestedStruct.e = 112233445566;
     }
 }

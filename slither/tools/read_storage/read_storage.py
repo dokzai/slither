@@ -622,9 +622,9 @@ class SlitherReadStorage:
 
             offset += size
 
-            if offset >= slot_size:
+            while offset >= slot_size:
                 slot += 1
-                offset = 0
+                offset -= slot_size
 
         slot_as_bytes = int.to_bytes(slot, 32, byteorder="big")
         info = f"\nStruct Variable: {struct_var}"

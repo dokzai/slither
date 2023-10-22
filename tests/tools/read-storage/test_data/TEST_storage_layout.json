@@ -572,5 +572,69 @@
                 }
             }
         }
+    },
+    "_nestedStruct": {
+        "name": "_nestedStruct",
+        "type_string": "StorageLayout.NestedStruct",
+        "slot": 21,
+        "size": 1024,
+        "offset": 0,
+        "value": "0000000000000000000000000000000000000000000000000000000000000002",
+        "elems": {
+            "nested": {
+                "name": "_nestedStruct.nested",
+                "type_string": "DynamicStruct",
+                "slot": 21,
+                "size": 512,
+                "offset": 0,
+                "value": "0000000000000000000000000000000000000000000000000000000000000002",
+                "elems": {}
+            },
+            "a": {
+                "name": "_nestedStruct.a",
+                "type_string": "uint256",
+                "slot": 23,
+                "size": 256,
+                "offset": 0,
+                "value": 123456789,
+                "elems": {}
+            },
+            "b": {
+                "name": "_nestedStruct.b",
+                "type_string": "bool",
+                "slot": 24,
+                "size": 8,
+                "offset": 0,
+                "value": true,
+                "elems": {}
+            },
+            "c": {
+                "name": "_nestedStruct.c",
+                "type_string": "uint16",
+                "slot": 24,
+                "size": 16,
+                "offset": 8,
+                "value": 4095,
+                "elems": {}
+            },
+            "d": {
+                "name": "_nestedStruct.d",
+                "type_string": "uint32",
+                "slot": 24,
+                "size": 32,
+                "offset": 24,
+                "value": 4294967295,
+                "elems": {}
+            },
+            "e": {
+                "name": "_nestedStruct.e",
+                "type_string": "uint64",
+                "slot": 24,
+                "size": 64,
+                "offset": 56,
+                "value": 112233445566,
+                "elems": {}
+            }
+        }
     }
 }
