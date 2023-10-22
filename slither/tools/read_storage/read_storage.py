@@ -578,19 +578,53 @@ class SlitherReadStorage:
         slot = int.from_bytes(slot_as_bytes, "big")
         offset = 0
         type_to = ""
+        slot_size = 256
         for var in elems:
             var_type = var.type
             if isinstance(var_type, ElementaryType):
                 size = var_type.size
-                if offset >= 256:
-                    slot += 1
-                    offset = 0
-                if struct_var == var.name:
-                    type_to = var_type.name
-                    break  # found struct var
-                offset += size
+            elif isinstance(var_type, ArrayType):
+                size = slot_size
+            elif isinstance(var_type, MappingType):
+                size = slot_size
+            elif isinstance(var_type, UserDefinedType) and isinstance(var_type.type, Structure):
+                var_type = var_type.type
+                assert var_type
+
+                (
+                    _,
+                    tmp_type_to,
+                    tmp_slot_as_bytes,
+                    size,
+                    offset,
+                ) = SlitherReadStorage._find_struct_var_slot(
+                    elems=var_type.elems_ordered,
+                    slot_as_bytes=int.to_bytes(slot, 32, byteorder="big"),
+                    struct_var=struct_var,
+                )
+
+                tmp_slot = int.from_bytes(tmp_slot_as_bytes, "big")
+
+                # found struct var
+                if tmp_type_to:
+                    slot = tmp_slot
+                    break
+                else:
+                    size = (tmp_slot - slot) * slot_size
             else:
+                size = slot_size
                 logger.info(f"{type(var_type)} is current not implemented in _find_struct_var_slot")
+
+            # found struct var
+            if struct_var == var.name:
+                type_to = var_type.name
+                break
+
+            offset += size
+
+            if offset >= slot_size:
+                slot += 1
+                offset = 0
 
         slot_as_bytes = int.to_bytes(slot, 32, byteorder="big")
         info = f"\nStruct Variable: {struct_var}"
